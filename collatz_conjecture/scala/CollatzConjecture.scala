@@ -1,17 +1,14 @@
 object CollatzConjecture {
+
   def calculateAbsoluteDiferenceFor(entry: Int):Int = {
     var _return = entry
-    var i = 1
-    var evens = 0
-    while(_return != 1) {
-      i += 1
-      if (_return % 2 == 0) {
-        _return = _return / 2
-        evens += 1
-      } else {
-        _return = _return*3 + 1
-      }
-    }
-    i - evens
+    val sequence = entry :: Iterator.continually(_return)
+      .takeWhile(i => i != 1)
+      .map({
+        case x:Int if x%2 == 0 => _return = _return/2; _return
+        case x:Int if x%2 != 0 => _return = _return*3+1; _return
+      }).toList
+    val evens = sequence.count(_ % 2 == 0)
+    sequence.size - evens
   }
 }
